@@ -1,10 +1,3 @@
-const NUMBER_OF_BUSINESS_DAYS_PER_WEEK = 5;
-const NUMBER_OF_WEEKS_IN_ITERATION = 2;
-const NUMBER_OF_DAYS_OF_ITERATION =
-  NUMBER_OF_BUSINESS_DAYS_PER_WEEK * NUMBER_OF_WEEKS_IN_ITERATION;
-const DAILY_OPERATING_HOURS = 8;
-const MAX_TIME = NUMBER_OF_DAYS_OF_ITERATION * DAILY_OPERATING_HOURS;
-
 class Estimate {
   constructor(
     readonly value: number,
@@ -17,10 +10,15 @@ class Estimate {
 }
 
 class Estimates {
-  constructor(private readonly estimationValues: Array<number>) {}
+  constructor(
+    private readonly estimationValues: Array<number>,
+    private readonly maxTime: number
+  ) {}
 
   get timeEstimateRatio(): number {
-    return MAX_TIME / this.estimationValues[this.estimationValues.length - 1];
+    return (
+      this.maxTime / this.estimationValues[this.estimationValues.length - 1]
+    );
   }
 
   createEstimate(value: number) {
@@ -61,8 +59,8 @@ class Estimates {
 export class EstimateHealthChecker {
   private readonly estimates: Estimates;
 
-  constructor(estimateValues: Array<number>) {
-    this.estimates = new Estimates(estimateValues);
+  constructor(estimateValues: Array<number>, private readonly maxTime: number) {
+    this.estimates = new Estimates(estimateValues, this.maxTime);
   }
 
   private calcLowerTimeBound(estimate: Estimate): number {
@@ -73,7 +71,7 @@ export class EstimateHealthChecker {
   }
 
   private calcUpperTimeBound(estimate: Estimate): number {
-    if (this.estimates.isMax(estimate)) return MAX_TIME;
+    if (this.estimates.isMax(estimate)) return this.maxTime;
 
     const nextEstimate = this.estimates.findOneSizeAbove(estimate);
     return estimate.time + (nextEstimate.time - estimate.time) / 2;

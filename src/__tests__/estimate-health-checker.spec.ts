@@ -1,10 +1,11 @@
 import { EstimateHealthChecker } from '../estimate-health-checker';
 
 describe('calcEstimateHealth()', () => {
-  const estimationValues = [0, 1, 2, 3, 5, 8, 13, 21, 34];
-  const healthChecker = new EstimateHealthChecker(estimationValues);
-
   describe('using Fibonacci numbers, the maximum value is 34 and the maximum operating time is 80 hours', () => {
+    const estimationValues = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+    const maxTime = 80;
+    const healthChecker = new EstimateHealthChecker(estimationValues, maxTime);
+
     it('returns 0 if the estimate is appropriate', () => {
       expect(healthChecker.check(0, 0)).toEqual(0);
       expect(healthChecker.check(1, 2)).toEqual(0);

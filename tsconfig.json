@@ -5,7 +5,7 @@
     "resolveJsonModule": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
@@ -13,7 +13,8 @@
     "lib": ["es2017"],
     "types": ["node", "jest"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "declaration": true
   },
   "compileOnSave": true,
   "include": ["src"],
